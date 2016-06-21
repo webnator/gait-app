@@ -1,0 +1,14 @@
+{
+  "name": "GaitSpeed",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.4",
+    "ngCordova": "^0.1.26-alpha"
+  },
+  "dependencies": {
+    "angularjs-slider": "^2.11.0",
+    "lodash": "^4.9.0",
+    "font-awesome": "^4.5.0",
+    "bootstrap": "^3.3.6"
+  }
+}
