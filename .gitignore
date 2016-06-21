@@ -4,10 +4,7 @@
 node_modules/
 platforms/
 .DS_Store
-	.bowerrc
-	.editorconfig
-	.gitignore
-	.gitignore.swp
-	.idea/
-
+.bowerrc
+.editorconfig
+.idea/
 plugins/
