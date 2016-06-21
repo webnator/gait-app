@@ -13,13 +13,13 @@
     var sensorIterations = [];
     var sensorErrors = [];
     // Tolerance for the calibration in mm
-    var tolerance = 60;
-    // Iterations that need to stay within tolerance ratio
-    var calibrationIterations = 40;
+    var TOLERANCE = 60;
+    // Iterations that need to stay within TOLERANCE ratio
+    var CALIBRATIONITERATIONS = 40;
     // Maximum calibrations before a calibration error is sent
-    var maxIterations = 150;
+    var MAXITERATIONS = 150;
     // Errors to tolerate
-    var errorTolerate = 1;
+    var ERRORTOLERATE = 1;
 
     // Factory Methods
     vm.calibrate = calibrate;
@@ -45,11 +45,11 @@
                 sensorIterations[i] = 0;
                 sensorErrors[i] = 0;
               } else {
-                if ((data[i] >= (sensorBaseData[i] - tolerance)) && (data[i] <= (sensorBaseData[i] + tolerance))) {
+                if ((data[i] >= (sensorBaseData[i] - TOLERANCE)) && (data[i] <= (sensorBaseData[i] + TOLERANCE))) {
                   sensorIterations[i]++;
                 } else {
                   sensorErrors[i]++;
-                  if (sensorErrors[i] > errorTolerate) {
+                  if (sensorErrors[i] > ERRORTOLERATE) {
                     sensorBaseData[i] = data[i];
                     sensorIterations[i] = 0;
                     sensorErrors[i] = 0;
@@ -72,7 +72,7 @@
                   deferred.notify(noty);
                 });
             }
-            if (it >= maxIterations) {
+            if (it >= MAXITERATIONS) {
               BluetoothFactory.unsubscribe();
               deferred.reject(setResponseMessage('error', 'CALIBRATION_ERR', sensorIterations));
             }
@@ -105,16 +105,16 @@
         var i = measures.length;
         var eventDetected;
         if (backwards === false) {
-          eventDetected = (data[i] < (sensorBaseData[i] - tolerance)) || data[i] > (sensorBaseData[i] + tolerance);
+          eventDetected = (data[i] < (sensorBaseData[i] - TOLERANCE)) || data[i] > (sensorBaseData[i] + TOLERANCE);
         } else {
           var x = sensorBaseData.length - 1 - i;
-          eventDetected = (data[x] < (sensorBaseData[x] - tolerance)) || data[x] > (sensorBaseData[x] + tolerance);
+          eventDetected = (data[x] < (sensorBaseData[x] - TOLERANCE)) || data[x] > (sensorBaseData[x] + TOLERANCE);
         }
 
         if (measures.length === 0 && eventDetected === false) {
           // Listens for events in the last sensor in the array to detect backward walks
           var y = sensorBaseData.length - 1;
-          eventDetected = (data[y] < (sensorBaseData[y] - tolerance)) || data[y] > (sensorBaseData[y] + tolerance);
+          eventDetected = (data[y] < (sensorBaseData[y] - TOLERANCE)) || data[y] > (sensorBaseData[y] + TOLERANCE);
           if (eventDetected) {
             backwards = true;
           }
@@ -126,7 +126,7 @@
             position: i,
             time: measures[i],
             extra: detections[i],
-            errTol: errorTolerate
+            errTol: ERRORTOLERATE
           };
           deferred.notify(setResponseMessage('info', 'SENSOR_DETECTED', sensor_detected));
         }
@@ -154,7 +154,7 @@
         return false;
       }
       for (var i = 0; i < sensorIterations.length; i++) {
-        if (angular.isUndefined(sensorIterations[i]) || sensorIterations[i] < calibrationIterations) {
+        if (angular.isUndefined(sensorIterations[i]) || sensorIterations[i] < CALIBRATIONITERATIONS) {
           return false;
         }
       }
